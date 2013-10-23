@@ -36,8 +36,7 @@
         <h1>Welcome to JBoss!</h1>
 
         <div>
-            <p>You have successfully deployed a Spring MVC web application with showcases the use of
-                @ControllerAdvice.</p>
+            <p>You have successfully deployed a Spring MVC web application which showcases the use of @ControllerAdvice.</p>
         </div>
 
         <form:form commandName="newMember" id="reg">
@@ -128,8 +127,7 @@
     <div id="aside">
         <p>Learn more about JBoss Enterprise Application Platform 6.</p>
         <ul>
-            <li><a
-                    href="https://access.redhat.com/site/documentation/JBoss_Enterprise_Application_Platform/">Documentation</a></li>
+            <li><a href="https://access.redhat.com/site/documentation/JBoss_Enterprise_Application_Platform/">Documentation</a></li>
             <li><a href="http://red.ht/jbeap-6">Product Information</a></li>
         </ul>
     </div>

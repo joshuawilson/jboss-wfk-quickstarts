@@ -38,7 +38,8 @@
                 variables.</p>
         </div>
 
-        <form:form commandName="newMember" id="reg" method="post" action="">
+<%--         <form:form commandName="newMember" id="reg" method="post" action="#"> --%>
+        <form:form commandName="newMember" id="reg" method="post" action="${pageContext.request.contextPath}/">
             <h2>Member Registration</h2>
 
             <p>Enforces annotation-based constraints defined on the model class.</p>
@@ -77,7 +78,7 @@
 
         <h2>Filter</h2>
 
-        <form commandName="filterMember" id="filter">
+        <form:form commandName="filterMember" id="filter">
             <h2>Member Search Filter</h2>
             <table>
                 <tbody>
@@ -101,7 +102,7 @@
                     </td>
                 </tr>
             </table>
-        </form>
+        </form:form>
 
         <h2>Members</h2>
         <c:choose>
@@ -143,8 +144,7 @@
     <div id="aside">
         <p>Learn more about JBoss Enterprise Application Platform 6.</p>
         <ul>
-            <li><a
-                    href="https://access.redhat.com/site/documentation/JBoss_Enterprise_Application_Platform/">Documentation</a></li>
+            <li><a href="https://access.redhat.com/site/documentation/JBoss_Enterprise_Application_Platform/">Documentation</a></li>
             <li><a href="http://red.ht/jbeap-6">Product Information</a></li>
         </ul>
     </div>
@@ -155,26 +155,71 @@
         </p>
     </div>
 </div>
-<script type="text/javascript"
-        src="resources/js/jquery/jquery-1.9.1.js"></script>
+<script src="resources/js/jquery/jquery-1.9.1.js"></script>
 <script type="text/javascript">
     $(document).ready(
-            function () {
-                $("#filt").click(function (event) {
-                    event.preventDefault();
-                    var inputs = $('form#filter :input');
-                    $.get("filter;n=" + inputs[0].value + ";e=" + inputs[1].value, function (data) {
-                        $('body').html(data);
-                    });
+        function () {
+            $("#filt").click(function (event) {
+                event.preventDefault();
+                var inputs = $('form#filter :input');
+                var matrixvar = "mv/filter;n=" + inputs[0].value + ";e=" + inputs[1].value;
+//                 console.log("matrixvar = " + matrixvar);
+                $.get(matrixvar, function (data) {
+                    // This feels more like a hack to me and should be refactored.  This re-paints the entire page when 
+                    //  I think it should just clear the fields and return the correct data.
+                    $('body').html(data);
+                })
+                .done(function(data, textStatus, jqXHR) {
+//                     console.log("done filter");
+//                     console.log("data = " + data + ", textStatus = " + textStatus + ", jqXHR = " + jqXHR);
+//                     alert( "success" );
+                })
+                .fail(function(jqXHR, textStatus, errorThrown) {
+                    console.log("jqXHR.status = " + jqXHR.status);
+                    console.log("jqXHR.responseText = " + jqXHR.responseText);
+                    console.log("textStatus = " + textStatus);
+                    console.log("errorThrown = " + errorThrown);
+//                     alert( "error" );
+                })
+                // In response to a successful request, the function's arguments are the same as those of .done(): 
+                //  data, textStatus, and the jqXHR object. For failed requests the arguments are the same as those of .fail(): 
+                //  the jqXHR object, textStatus, and errorThrown.
+                .always(function(data, textStatus, jqXHR) {
+//                     console.log("always filter");
+//                     console.log("data = " + data + ", textStatus = " + textStatus + ", jqXHR = " + jqXHR);
+//                     alert( "finished" );
                 });
+            });
 
-                $("#clear").click(function (event) {
-                    event.preventDefault();
-                    $.get("filter;n=" + ";e=", function (data) {
-                        $('body').html(data);
-                    });
+            $("#clear").click(function (event) {
+                event.preventDefault();
+                $.get("mv/filter;n=;e=", function (data) {
+                    // This feels more like a hack to me and should be refactored.  This re-paints the entire page when 
+                    //  I think it should just clear the fields and return the correct data.
+                    $('body').html(data);
+                })
+                .done(function(data, textStatus, jqXHR) {
+//                     console.log("done clear");
+//                     console.log("data = " + data + ", textStatus = " + textStatus + ", jqXHR = " + jqXHR);
+//                     alert( "success" );
+                })
+                .fail(function(jqXHR, textStatus, errorThrown) {
+                    console.log("jqXHR.status = " + jqXHR.status);
+                    console.log("jqXHR.responseText = " + jqXHR.responseText);
+                    console.log("textStatus = " + textStatus);
+                    console.log("errorThrown = " + errorThrown);
+//                     alert( "error" );
+                })
+                // In response to a successful request, the function's arguments are the same as those of .done(): 
+                //  data, textStatus, and the jqXHR object. For failed requests the arguments are the same as those of .fail(): 
+                //  the jqXHR object, textStatus, and errorThrown.
+                .always(function(data, textStatus, jqXHR) {
+//                     console.log("always clear");
+//                     console.log("data = " + data + ", textStatus = " + textStatus + ", jqXHR = " + jqXHR);
+//                     alert( "finished" );
                 });
-            }
+            });
+        }
     );
 </script>
 </body>
