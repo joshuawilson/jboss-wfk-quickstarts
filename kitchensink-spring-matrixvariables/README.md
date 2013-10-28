@@ -61,46 +61,43 @@ To run the quickstart with the provided build script, you need the following:
     * For information on how to install and run JBoss, refer to the product documentation.
 
 
-Run the Quickstart
--------------------
+Configure Maven
+---------------
 
-* [Configure Maven](https://github.com/jboss-developer/jboss-wfk-quickstarts#configure-maven)
-* [Start the JBoss server](#start-the-jboss-server)
-* [Build and deploy the quickstarts](#build-and-deploy-the-quickstart)
+If you have not yet done so, you must [Configure Maven](../README.md#configure-maven) before testing the quickstarts.
 
 
-### Start the JBoss Server
-
-To start JBoss EAP:
+Start the JBoss Server
+-------------------------
 
 1. Open a command line and navigate to the root of the JBoss server directory.
-2. The following shows the command line to start the JBoss server:
+2. The following shows the command line to start the server:
 
-            For Linux:   JBOSS_HOME/bin/standalone.sh
-            For Windows: JBOSS_HOME\bin\standalone.bat
+        For Linux:   JBOSS_HOME/bin/standalone.sh
+        For Windows: JBOSS_HOME\bin\standalone.bat
 
-### Build and Deploy
+ 
+Build and Deploy the Quickstart
+-------------------------
 
-#### Build the Quickstart Archive
+_NOTE: The following build command assumes you have configured your Maven user settings. If you have not, you must include Maven setting arguments on the command line. See [Build and Deploy the Quickstarts](../README.md#build-and-deploy-the-quickstarts) for complete instructions and additional options._
 
-In some cases, you may want to build the application to test for compile errors or view the contents of the archive. 
+1. Make sure you have started the JBoss Server as described above.
+2. Open a command line and navigate to the root directory of this quickstart.
+3. Type this command to build and deploy the archive:
 
-1. Open a command line and navigate to the root directory of the quickstart.
-2. Use this command if you only want to build the archive, but not deploy it:
-
-            mvn clean package
-
-#### Build and Deploy the Quickstart Archive
-
-1. Make sure you [start the JBoss server](#start-the-jboss-server) for the deploy to work. 
-2. Open a command line and navigate to the root directory of the quickstart.
-3. Use this command to build and deploy the archive:
-
-            mvn clean package jboss-as:deploy
-
+        mvn clean install jboss-as:deploy
 4. This will deploy `target/jboss-kitchensink-spring-matrixvariables.war` to the running instance of the server.
 
-#### Undeploy an Archive
+
+Access the application
+----------------------
+
+The application will be running at the following URL: <http://localhost:8080/jboss-kitchensink-spring-matrixvariables/>.
+
+
+Undeploy the Archive
+--------------------
 
 1. Make sure you have started the JBoss Server as described above.
 2. Open a command line and navigate to the root directory of this quickstart.
@@ -109,10 +106,19 @@ In some cases, you may want to build the application to test for compile errors 
         mvn jboss-as:undeploy
 
 
-Access the application
-----------------------
+Run the Arquillian Tests 
+-------------------------
 
-The application will be running at the following URL: <http://localhost:8080/jboss-kitchensink-spring-matrixvariables/>.
+This quickstart provides Arquillian tests. By default, these tests are configured to be skipped as Arquillian tests require the use of a container. 
+
+_NOTE: The following commands assume you have configured your Maven user settings. If you have not, you must include Maven setting arguments on the command line. See [Run the Arquillian Tests](../README.md#run-the-arquillian-tests) for complete instructions and additional options._
+
+1. Make sure you have started the JBoss Server as described above.
+2. Open a command line and navigate to the root directory of this quickstart.
+3. Type the following command to run the test goal with the following profile activated:
+
+        mvn clean test -Parq-jbossas-remote 
+
 
 
 Run the Quickstart in JBoss Developer Studio or Eclipse
