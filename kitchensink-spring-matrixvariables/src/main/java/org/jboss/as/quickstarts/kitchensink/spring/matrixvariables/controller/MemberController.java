@@ -62,6 +62,7 @@ public class MemberController {
     // Note that to enable the use of matrix variables, you must set the removeSemicolonContent property of RequestMappingHandlerMapping 
     //  to false. By default it is set to true with the exception of the MVC namespace and the MVC Java config both of which automatically 
     //  enable the use of matrix variables. 
+    // This will allow the Matrix Variables to be passed in because they use semicolons to separate each one.
     // This was done by creating a Configuration class and pointing to it in the jboss-as-spring-mvc-context.xml. 
     @RequestMapping(value = "/mv/{filter}", method = RequestMethod.GET)
     public ModelAndView filteredMembers(@MatrixVariable(value = "n", pathVar = "filter", required = false, defaultValue = "") String n, 
