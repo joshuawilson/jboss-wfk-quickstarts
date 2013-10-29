@@ -38,8 +38,7 @@
                 variables.</p>
         </div>
 
-        <form:form commandName="newMember" id="reg" method="post" action="${pageContext.request.contextPath}/">
-<%--         <form:form commandName="newMember" id="reg" method="post" action="#"> --%>
+        <form:form commandName="newMember" id="reg" method="post" action=".">
             <h2>Member Registration</h2>
 
             <p>Enforces annotation-based constraints defined on the model class.</p>
