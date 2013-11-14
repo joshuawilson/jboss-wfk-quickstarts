@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.EntityType;
 
@@ -45,15 +46,38 @@ public class MemberDaoImpl implements MemberDao {
     }
 
     public List<Member> findByNameAndEmail(String name, String email) {
-    	log.fine("findByNameAndEmail name = " + name + ", email = " + email);
+        log.fine("findByNameAndEmail name = " + name + ", email = " + email);
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Member> criteria = cb.createQuery(Member.class);
         EntityType<Member> type = em.getMetamodel().entity(Member.class);
         Root<Member> member = criteria.from(Member.class);
-        if (name != null && !name.isEmpty() && name != "")
-            criteria.where(cb.like(cb.lower(member.get(type.getDeclaredSingularAttribute("name", String.class))), "%" + name.toLowerCase() + "%"));
-        if (email != null && !email.isEmpty() && email != "")
-            criteria.where(cb.like(cb.lower(member.get(type.getDeclaredSingularAttribute("email", String.class))), "%" + email.toLowerCase() + "%"));
+        // Fix for JDF-558; joshuawilson 11/13/2013
+        // The original design had the first WHERE clause overwriting the second one.  Since it needs to handle both
+        //   a Name and Email as well the single version, it made sense to externalize the Predicates.
+        Predicate isLikeName = null;
+        Boolean nameExists = false;
+        Predicate isLikeEmail = null;
+        Boolean emailExists = false;
+        // If the name exist create the Predicate for a LIKE comparison of the name. 
+        if (name != null && !name.isEmpty() && name != "") {
+            isLikeName = cb.like(cb.lower(member.get(type.getDeclaredSingularAttribute("name", String.class))), "%" + name.toLowerCase() + "%");
+            nameExists = true;
+        }
+        // If the email exist create the Predicate for a LIKE comparison of the email. 
+        if (email != null && !email.isEmpty() && email != "") {
+            isLikeEmail = cb.like(cb.lower(member.get(type.getDeclaredSingularAttribute("email", String.class))), "%" + email.toLowerCase() + "%");
+            emailExists = true;
+        }
+        if (nameExists && emailExists) {
+            // If both name and email exist then use both in the WHERE clause.
+            criteria.where(cb.and(isLikeName,isLikeEmail));
+        } else if (nameExists) {
+            // If only name exists then use only name in the WHERE clause.
+            criteria.where(isLikeName);
+        } else if (emailExists) {
+            // If only email exists then use only email in the WHERE clause.
+            criteria.where(isLikeEmail);
+        }
         return em.createQuery(criteria).getResultList();
     }
 
