@@ -16,6 +16,7 @@
  */
 package org.jboss.as.quickstarts.kitchensink.spring.matrixvariables.data;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -27,7 +28,6 @@ import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.EntityType;
 
 import org.jboss.as.quickstarts.kitchensink.spring.matrixvariables.model.Member;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,33 +51,19 @@ public class MemberDaoImpl implements MemberDao {
         CriteriaQuery<Member> criteria = cb.createQuery(Member.class);
         EntityType<Member> type = em.getMetamodel().entity(Member.class);
         Root<Member> member = criteria.from(Member.class);
-        // Fix for JDF-558; joshuawilson 11/13/2013
-        // The original design had the first WHERE clause overwriting the second one.  Since it needs to handle both
-        //   a Name and Email as well the single version, it made sense to externalize the Predicates.
-        Predicate isLikeName = null;
-        Boolean nameExists = false;
-        Predicate isLikeEmail = null;
-        Boolean emailExists = false;
-        // If the name exist create the Predicate for a LIKE comparison of the name. 
-        if (name != null && !name.isEmpty() && name != "") {
-            isLikeName = cb.like(cb.lower(member.get(type.getDeclaredSingularAttribute("name", String.class))), "%" + name.toLowerCase() + "%");
-            nameExists = true;
+        List<Predicate> predicatesList = new ArrayList<Predicate>();
+        // If the name exist create the Predicate for a LIKE comparison of the name.
+        if (name != null && !name.isEmpty()) {
+            Predicate isLikeName = cb.like(cb.lower(member.get(type.getDeclaredSingularAttribute("name", String.class))), "%" + name.toLowerCase() + "%");
+            predicatesList.add(isLikeName);
         }
         // If the email exist create the Predicate for a LIKE comparison of the email. 
-        if (email != null && !email.isEmpty() && email != "") {
-            isLikeEmail = cb.like(cb.lower(member.get(type.getDeclaredSingularAttribute("email", String.class))), "%" + email.toLowerCase() + "%");
-            emailExists = true;
+        if (email != null && !email.isEmpty()) {
+            Predicate isLikeEmail = cb.like(cb.lower(member.get(type.getDeclaredSingularAttribute("email", String.class))), "%" + email.toLowerCase() + "%");
+            predicatesList.add(isLikeEmail);
         }
-        if (nameExists && emailExists) {
-            // If both name and email exist then use both in the WHERE clause.
-            criteria.where(cb.and(isLikeName,isLikeEmail));
-        } else if (nameExists) {
-            // If only name exists then use only name in the WHERE clause.
-            criteria.where(isLikeName);
-        } else if (emailExists) {
-            // If only email exists then use only email in the WHERE clause.
-            criteria.where(isLikeEmail);
-        }
+        // Add the Predicates to the criteria query. A predicate is utilized for filtering the result only when it is provided. 
+        criteria.where(predicatesList.toArray(new Predicate[predicatesList.size()]));
         return em.createQuery(criteria).getResultList();
     }
 
