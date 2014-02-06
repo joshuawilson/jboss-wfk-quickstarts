@@ -49,17 +49,24 @@ _NOTE: The following build command assumes you have configured your Maven user s
 2. Open a command line and navigate to the root directory of this quickstart.
 3. Type this command to build and deploy the archive:
 
-        mvn clean package jboss-as:deploy
-        
+        mvn clean package jboss-as:deploy     
 4. This deploys the `target/jboss-spring-resteasy.war` to the running instance of the server.
 
 
-4. This deploys the `target/jboss-spring-resteasy.war` to the running instance of the server and runs two integration tests that verify the application works. You should see the following output:
-   
-   _Note:_ If you prefer to use the `mvn install` command to run the integration tests, you must deploy the application first. For example:
+Access the application 
+---------------------
 
-        mvn clean package jboss-as:deploy
+The application will be running at the following URL:  <http://localhost:8080/jboss-spring-resteasy/hello?name=yourname>. 
+
+Run the Tests
+-------------
+
+1. Make sure you have started the JBoss Server as described above and deployed the quickstart.
+2. Open a command prompt and navigate to the root directory of this quickstart.
+3. Type the following command to run the test goal with the following profile activated:
+
         mvn install -Prest-test
+4. You should see the following output:
 
         -------------------------------------------------------
          T E S T S
@@ -75,11 +82,6 @@ _NOTE: The following build command assumes you have configured your Maven user s
         [INFO] BUILD SUCCESS
         [INFO] ------------------------------------------------------------------------
 
-
-Access the application 
----------------------
-
-You can also test the application by accessing the following URL: <http://localhost:8080/jboss-spring-resteasy/hello?name=yourname>. 
 
 
 Undeploy the Archive
