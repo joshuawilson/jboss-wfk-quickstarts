@@ -19,6 +19,7 @@ package org.jboss.quickstarts.wfk.contact.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.io.File;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -39,7 +40,7 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.joda.time.DateTime;
 
 import org.junit.Test;
@@ -56,10 +57,16 @@ public class ContactRegistrationTest {
     
     @Deployment
     public static Archive<?> createTestArchive() {
+        File[] libs = Maven.resolver().loadPomFromFile("pom.xml").resolve(
+                "joda-time:joda-time",
+                "org.jadira.usertype:usertype.core"
+        ).withTransitivity().asFile();
+
         return ShrinkWrap
             .create(WebArchive.class, "test.war")
             .addClasses(Contact.class, ContactRESTService.class, ContactRepository.class, ContactValidator.class, 
                 ContactService.class, Resources.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
+            .addAsLibraries(libs)
             .addAsWebInfResource("arquillian-ds.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
             .addAsWebInfResource("jboss-deployment-structure.xml");
     }
