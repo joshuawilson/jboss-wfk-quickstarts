@@ -19,7 +19,6 @@ package org.jboss.quickstarts.wfk.contact.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.util.Date;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -34,14 +33,17 @@ import org.jboss.quickstarts.wfk.contact.ContactRepository;
 import org.jboss.quickstarts.wfk.contact.ContactRESTService;
 import org.jboss.quickstarts.wfk.contact.ContactService;
 import org.jboss.quickstarts.wfk.contact.ContactValidator;
+import org.jboss.quickstarts.wfk.util.Resources;
+
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+
+import org.joda.time.DateTime;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.jboss.quickstarts.wfk.util.ConvertDate;
-import org.jboss.quickstarts.wfk.util.Resources;
 
 /**
  * Uses Arquilian to test the JAX-RS processing class for contact registration.
@@ -56,8 +58,8 @@ public class ContactRegistrationTest {
     public static Archive<?> createTestArchive() {
         return ShrinkWrap
             .create(WebArchive.class, "test.war")
-            .addClasses(Contact.class, ContactRESTService.class, ContactRepository.class, ContactValidator.class, ContactService.class,
-                ConvertDate.class, Resources.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
+            .addClasses(Contact.class, ContactRESTService.class, ContactRepository.class, ContactValidator.class, 
+                ContactService.class, Resources.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
             .addAsWebInfResource("arquillian-ds.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
@@ -74,7 +76,7 @@ public class ContactRegistrationTest {
 //    private static Client client = ClientBuilder.newClient();
     
     //Set millis 498484800000 from 1985-10-10T12:00:00.000Z
-    private Date date = new Date(498484800000L);
+    private DateTime date = new DateTime(498484800000L);
 
     @Test
     @InSequence(1)
@@ -164,7 +166,7 @@ public class ContactRegistrationTest {
 //        assertEquals(Response.Status.NOT_FOUND, response.getStatusInfo());
 //    }
     
-    private Contact createContactInstance(String firstName, String lastName, String email, String phone, Date birthDate) {
+    private Contact createContactInstance(String firstName, String lastName, String email, String phone, DateTime birthDate) {
         Contact contact = new Contact();
         contact.setFirstName(firstName);
         contact.setLastName(lastName);

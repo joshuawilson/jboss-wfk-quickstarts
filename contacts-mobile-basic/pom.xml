@@ -115,6 +115,11 @@
             <artifactId>hibernate-jpa-2.0-api</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
         <!-- Import the EJB API, we use provided scope as the API is included in JBoss -->
         <dependency>
@@ -143,6 +148,20 @@
                     <artifactId>slf4j-api</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <!-- Import Joda-Time, this is a replacement for the Java Date/Calendar APIs. -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>1.6.2-redhat-4</version>
+<!--             <version>1.6.2-redhat-4</version> -->
+<!--             <scope>provided</scope> -->
+        </dependency>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time-hibernate</artifactId>
+            <version>1.3</version>
         </dependency>
 
         <!-- Now we declare any tools needed -->

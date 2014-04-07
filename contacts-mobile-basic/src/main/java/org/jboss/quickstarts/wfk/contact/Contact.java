@@ -17,7 +17,6 @@
 package org.jboss.quickstarts.wfk.contact;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,8 +33,11 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
+
+import org.joda.time.DateTime;
 
 /**
  * This is a Domain Object.   
@@ -98,7 +100,8 @@ public class Contact implements Serializable {
     @NotNull
     @Past(message = "Birthdates can not be in the future. Please choose one from the past")
     @Column(name = "birth_date")
-    private Date birthDate;
+    @Type(type = "org.joda.time.contrib.hibernate.PersistentDateTime")
+    private DateTime birthDate;
 
     public Long getId() {
         return id;
@@ -140,11 +143,11 @@ public class Contact implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public Date getBirthDate() {
+    public DateTime getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(DateTime birthDate) {
         this.birthDate = birthDate;
     }
 }
