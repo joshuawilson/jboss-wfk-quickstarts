@@ -60,7 +60,8 @@ public class ContactRegistrationTest {
             .create(WebArchive.class, "test.war")
             .addClasses(Contact.class, ContactRESTService.class, ContactRepository.class, ContactValidator.class, 
                 ContactService.class, Resources.class).addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
-            .addAsWebInfResource("arquillian-ds.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+            .addAsWebInfResource("arquillian-ds.xml").addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+            .addAsWebInfResource("jboss-deployment-structure.xml");
     }
 
     @Inject
