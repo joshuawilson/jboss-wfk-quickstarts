@@ -56,8 +56,9 @@ public class ContactRegistrationTest {
     @Deployment
     public static Archive<?> createTestArchive() {
         File[] libs = Maven.resolver().loadPomFromFile("pom.xml").resolve(
-                "joda-time:joda-time-hibernate"
-//        		"org.hibernate:hibernate-core"
+//                "joda-time:joda-time-hibernate"
+                "joda-time:joda-time",
+                "org.jadira.usertype:usertype.core"
         ).withTransitivity().asFile();
 
         Archive<?> archive = ShrinkWrap

@@ -100,7 +100,7 @@ public class Contact implements Serializable {
     @NotNull
     @Past(message = "Birthdates can not be in the future. Please choose one from the past")
     @Column(name = "birth_date")
-    @Type(type = "org.joda.time.contrib.hibernate.PersistentDateTime")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     private DateTime birthDate;
 
     public Long getId() {
