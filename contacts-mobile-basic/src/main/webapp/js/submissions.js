@@ -97,13 +97,6 @@ $(document).ready(function() {
                 // Must pull from the specific form so that we get the right data in case another form has data in it.
                 var serializedForm = $("#contacts-add-form").serializeObject();
                 console.log(getCurrentTime() + " [js/submits.js] (submitCreate - submit event) - serializedForm.birthDate = " + serializedForm.birthDate);
-                // The date from the Form is normal but as soon as it gets converted to a JavaScript Date type, it 
-                // gets a UTC/GMT timezone without converting from local to UTC.  So this fixes that by converting it back.
-                // This will assign the correct Offset for the local timezone to the UTC stored date. When it gets displayed
-                // back in the UI it will show local time that is not correct.
-                var birthdate = convertDateStringToOffsetUTC(serializedForm.birthDate);
-                // Assign the updated date/time back to the object. 
-                serializedForm.birthDate = birthdate;
                 // Turn the object into a String.
                 var contactData = JSON.stringify(serializedForm);
                 console.log(getCurrentTime() + " [js/submits.js] (submitCreate - submit event) - contactData = " + contactData);
@@ -255,13 +248,6 @@ $(document).ready(function() {
                 // Must pull from the specific form so that we get the right data in case another form has data in it.
                 var serializedForm = $("#contacts-edit-form").serializeObject();
                 console.log(getCurrentTime() + " [js/submits.js] (submitUpdate - submit event) - serializedForm.birthDate = " + serializedForm.birthDate);
-                // The date from the Form is normal but as soon as it gets converted to a JavaScript Date type, it 
-                // gets a UTC/GMT timezone without converting from local to UTC.  So this fixes that by converting it back.
-                // This will assign the correct Offset for the local timezone to the UTC stored date. When it gets displayed
-                // back in the UI it will show local time that is not correct.
-                var birthdate = convertDateStringToOffsetUTC(serializedForm.birthDate);
-                // Assign the updated date/time back to the object.
-                serializedForm.birthDate = birthdate;
                 // Turn the object into a String.
                 var contactData = JSON.stringify(serializedForm);
                 console.log(getCurrentTime() + " [js/submits.js] (submitUpdate - submit event) - contactData = " + contactData);
